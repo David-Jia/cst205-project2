@@ -18,7 +18,7 @@ def secondCount():
                  if seconds == 5:
                      a=3
 def show_frame():
-    width, height = 800, 600
+    width, height = 550, 400
     cap = cv2.VideoCapture(0)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
@@ -80,7 +80,10 @@ def censorbar():
 
     face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
     eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
-     
+    
+    #keeps track of how many eyes detected
+	
+    
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)
     for (x,y,w,h) in faces:
 
@@ -88,13 +91,21 @@ def censorbar():
         roi_color = img[y:y+h, x:x+w]
         eyes = eye_cascade.detectMultiScale(roi_gray)
         for (ex,ey,ew,eh) in eyes:
-            cv2.rectangle(roi_color,(ex,ey),(ex+ew,ey+eh),(0,0,0),35)
-            cv2.line(roi_color,(ex,ey),(ex+ew,ey+eh),(0,0,0),30)
+        	eyecount = 0 
+        	eyecount+=1
+        	#takes the top left point of the first eye
+       		if (eyecount % 2 == 1):
+       		 	topLeftX = ex
+        		topLeftY = ey
+        	#takes the bottom right point of the second eye and draws a censor rectangle between the
+       	 	#two points
+        	elif (eyecount % 2 == 0):
+        		cv2.rectangle(roi_color,(topLeftX,topLeftY),(ex+ew,ey+eh),(0,0,0),-1)
      
     cv2.imshow('img',img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-    cv2.imwrite("./result.png", result_image)
+    #cv2.imwrite("./result.png", result_image)
     makepic()
 def pickfile():
     Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
@@ -140,7 +151,7 @@ root = Tk()
 
 lmain = Label(root)
 lmain.pack()
-menubar = Menu(root)
+"""menubar = Menu(root)
 filemenu = Menu(menubar, tearoff=0)
 filemenu.add_command(label="New", command=takepic)
 filemenu.add_command(label="Open", command=makepic)
@@ -148,27 +159,31 @@ filemenu.add_command(label="Save", command=donothing)
 filemenu.add_command(label="Save as...", command=donothing)
 filemenu.add_command(label="Close", command=donothing)
 filemenu.add_command(label="Exit", command=root.quit)
-filemenu.add_separator()
+filemenu.add_separator()"""
 
 
-menubar.add_cascade(label="File", menu=filemenu)
+#menubar.add_cascade(label="File", menu=filemenu)
 
-root.config(menu=menubar)
+#root.config(menu=menubar)
 root.wm_title("Face Blur")
 
 
 button = Button(text="Blur Face", command=pickfile)
-button.place(x = 300, y = 300)
+button.place(x = 300, y = 100)
 button2 = Button(text="Censor Bar", command=censorbar)
-button2.place(x = 100, y = 300)
+button2.place(x = 100, y = 100)
 button2 = Button(text="Take Picture", command=takepic)
-button2.place(x = 200, y = 400)
+button2.place(x = 200, y = 200)
+# runs showframe() if a webcam is detected
 try:
 	showframe()
+# if a webcam is not detected, then changes the background to a default one
 except:
-	width, height = 800, 600
+	width, height = 550, 400
 	root.minsize(width,height)
-root.config(menu=menubar)
+	root.maxsize(width,height)
+	root.configure(background="black")
+#root.config(menu=menubar)
 root.wm_title("Face Blur")
 root.mainloop()
 
