@@ -4,6 +4,7 @@ import cv2
 from Tkinter import *
 from tkFileDialog import askopenfilename
 from PIL import ImageTk, Image
+import random
 import os
 import time
 import datetime, time
@@ -103,11 +104,13 @@ def censorbar():
         	elif (eyecount % 2 == 0):
         		cv2.rectangle(roi_color,(topLeftX,topLeftY),(ex+ew,ey+eh),(0,0,0),-1)
      
-    cv2.imshow('img',img)
+    censorFileName = "./result_" + str(int(random.random() * 1000)) + ".png"
+    cv2.imwrite(censorFileName, img)
+    cv2.imshow(censorFileName, img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-    cv2.imwrite("./result.png", result_image)
     makepic()
+
 def pickfile():
     Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
     filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
@@ -140,23 +143,18 @@ def pickfile():
             sub_face = cv2.GaussianBlur(sub_face,(45, 45), 45)
             # merge this blurry rectangle to our final image
             result_image[y:y+sub_face.shape[0], x:x+sub_face.shape[1]] = sub_face
-            face_file_name = "./face_" + str(y) + ".jpg"
-            cv2.imwrite(face_file_name, sub_face)
         
-
-    #cv2.imshow("Detected face", result_image)
-    cv2.imwrite("./result.png", result_image)
+    blurFileName = "./result_" + str(int(random.random() * 1000)) + ".png"
+    cv2.imwrite(blurFileName, img)
+    cv2.imshow(blurFileName, img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
     makepic()
 
 root = Tk()
 
 lmain = Label(root)
 lmain.pack()
-
-
-#root.config(menu=menubar)
-root.wm_title("Face Blur")
-
 
 button = Button(text="Blur Face", command=pickfile)
 button.place(x = 300, y = 100)
