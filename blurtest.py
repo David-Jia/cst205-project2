@@ -84,21 +84,19 @@ def censorbar():
     face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
     eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
     
-    #keeps track of how many eyes detected
-	
-    
     faces = face_cascade.detectMultiScale(gray, 1.3, 5)
     for (x,y,w,h) in faces:
 
+		#keeps track of how many eyes detected
+        eyecount=0
         roi_gray = gray[y:y+h, x:x+w]
         roi_color = img[y:y+h, x:x+w]
         eyes = eye_cascade.detectMultiScale(roi_gray)
         for (ex,ey,ew,eh) in eyes:
-        	eyecount = 0 
         	eyecount+=1
         	#takes the top left point of the first eye
        		if (eyecount % 2 == 1):
-       		 	topLeftX = ex
+       			topLeftX = ex
         		topLeftY = ey
         	#takes the bottom right point of the second eye and draws a censor rectangle between the
        	 	#two points
