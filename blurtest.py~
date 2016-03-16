@@ -105,7 +105,7 @@ def censorbar():
     cv2.imshow('img',img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-    #cv2.imwrite("./result.png", result_image)
+    cv2.imwrite("./result.png", result_image)
     makepic()
 def pickfile():
     Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
@@ -151,18 +151,7 @@ root = Tk()
 
 lmain = Label(root)
 lmain.pack()
-"""menubar = Menu(root)
-filemenu = Menu(menubar, tearoff=0)
-filemenu.add_command(label="New", command=takepic)
-filemenu.add_command(label="Open", command=makepic)
-filemenu.add_command(label="Save", command=donothing)
-filemenu.add_command(label="Save as...", command=donothing)
-filemenu.add_command(label="Close", command=donothing)
-filemenu.add_command(label="Exit", command=root.quit)
-filemenu.add_separator()"""
 
-
-#menubar.add_cascade(label="File", menu=filemenu)
 
 #root.config(menu=menubar)
 root.wm_title("Face Blur")
@@ -183,7 +172,6 @@ except:
 	root.minsize(width,height)
 	root.maxsize(width,height)
 	root.configure(background="black")
-#root.config(menu=menubar)
 root.wm_title("Face Blur")
 root.mainloop()
 

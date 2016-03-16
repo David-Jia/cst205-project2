@@ -18,6 +18,8 @@ def secondCount():
                  if seconds == 5:
                      a=3
 def show_frame():
+#Code below is a piece from http://kieleth.blogspot.com/2014/05/webcam-with-opencv-and-tkinter.html
+#implemented to work with our project
     width, height = 550, 400
     cap = cv2.VideoCapture(0)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
@@ -32,7 +34,8 @@ def show_frame():
     lmain.after(10, show_frame)
     
 def takepic():
- 
+#Code below is from https://codeplasma.com/2012/12/03/getting-webcam-images-with-python-and-opencv-2-for-real-this-time/
+#implemented to work with our project
     secondCount()
     # Camera 0 is the integrated web cam on my netbook
     camera_port = 0
