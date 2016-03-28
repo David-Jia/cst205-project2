@@ -170,7 +170,12 @@ except:
 	width, height = 550, 400
 	root.minsize(width,height)
 	root.maxsize(width,height)
-	root.configure(background="black")
+	im = Image.open("otter.jpg")
+	tkimage = ImageTk.PhotoImage(im)
+	myvar = Label(root, image = tkimage)
+	myvar.place(x=0,y=0,relwidth=1,relheight=1)
+	myvar.lower()
+	#root.configure(background="black")
 root.wm_title("Face Blur")
 root.mainloop()
 
