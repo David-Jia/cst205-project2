@@ -8,4 +8,12 @@ Brandon Martinez
 
 Harrison Oglesby
 
-git repo
+Project 2
+
+Description:  Face-blurring and eye-censoring program that uses Gaussian-style
+faceblurring to mask people's identity.
+If the user has a webcam, they are able to take pictures to perform face-blurring or eye-censoring on.
+
+Uses the OpenCV and Tkinter libraries in Python.
+
+
