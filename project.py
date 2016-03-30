@@ -1,3 +1,12 @@
+# Names: Harrison Oglesby, Brandon Martinez, David Jia
+# Trello: https://trello.com/b/BBmBhBGL/team-52-project-2-cst-205
+# Github: https://github.com/HarrisonOg/cst205-project2
+# Description: Description:  Face-blurring and eye-censoring program that uses Gaussian-style
+# faceblurring to mask people's identity.
+# If the user has a webcam, they are able to take pictures to perform face-blurring or eye-censoring on.
+
+# Uses the OpenCV and Tkinter libraries in Python 2.7.
+
 # import the necessary packages
 import numpy as np
 import cv2
@@ -9,6 +18,7 @@ import os
 import time
 import datetime, time
 
+# Countdown for when takepic() is used, counts 1, 2, 3, 4, 5 then takes the picture
 def secondCount():    
     a = 0
     while a < 1:
@@ -21,6 +31,7 @@ def secondCount():
 def show_frame():
 #Code below is a piece from http://kieleth.blogspot.com/2014/05/webcam-with-opencv-and-tkinter.html
 #implemented to work with our project
+#if webcam is detected, makes the background be what the connected webcam is showing
     width, height = 550, 400
     cap = cv2.VideoCapture(0)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
@@ -37,6 +48,7 @@ def show_frame():
 def takepic():
 #Code below is from https://codeplasma.com/2012/12/03/getting-webcam-images-with-python-and-opencv-2-for-real-this-time/
 #implemented to work with our project
+#Takes a picture with the connected webcam and saves the image
     secondCount()
     # Camera 0 is the integrated web cam on my netbook
     camera_port = 0
@@ -60,7 +72,7 @@ def takepic():
     print("Taking image...")
     # Take the actual image we want to keep
     camera_capture = im
-    file = "test_image.png"
+    file = "./result_" + str(int(random.random() * 1000)) + ".png"
     # A nice feature of the imwrite method is that it will automatically choose the
     # correct format based on the file extension you provide. Convenient!
     cv2.imwrite(file, camera_capture)
@@ -68,19 +80,25 @@ def takepic():
 # You'll want to release the camera, otherwise you won't be able to create a new
 # capture object until your script exits
     del(camera)
+
 def donothing():
     print "hey"
+
+# opens the resulting image after face blurring or eye censoring
 def makepic():
    filewin = Toplevel(root)
    img = ImageTk.PhotoImage(Image.open("result.png"))
    panel = Label(filewin, image = img)
    panel.pack(side = "bottom", fill = "both", expand = "yes")
    filewin.mainloop()
+
+# creates a sensor bar over the eyes
 def censorbar():
     Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
     filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
-    img = cv2.imread(filename)
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    img = cv2.imread(filename) # reads the file
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # creates a grey version of the image to make the face 
+    											 # recognition work a little better
 
     face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
     eye_cascade = cv2.CascadeClassifier('haarcascade_eye.xml')
@@ -110,8 +128,9 @@ def censorbar():
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     makepic()
-
-def pickfile():
+    
+# blurs the face
+def blur():
     Tk().withdraw() # we don't want a full GUI, so keep the root window from appearing
     filename = askopenfilename() # show an "Open" dialog box and return the path to the selected file
     image = cv2.imread(filename)
@@ -156,7 +175,8 @@ root = Tk()
 lmain = Label(root)
 lmain.pack()
 
-button = Button(text="Blur Face", command=pickfile)
+# buttons the appear for the GUI
+button = Button(text="Blur Face", command=blur)
 button.place(x = 300, y = 100)
 button2 = Button(text="Censor Bar", command=censorbar)
 button2.place(x = 100, y = 100)
@@ -165,7 +185,7 @@ button2.place(x = 200, y = 200)
 # runs showframe() if a webcam is detected
 try:
 	showframe()
-# if a webcam is not detected, then changes the background to a default one
+# if a webcam is not detected, then changes the background to a default one, otter background
 except:
 	width, height = 550, 400
 	root.minsize(width,height)
@@ -175,7 +195,6 @@ except:
 	myvar = Label(root, image = tkimage)
 	myvar.place(x=0,y=0,relwidth=1,relheight=1)
 	myvar.lower()
-	#root.configure(background="black")
 root.wm_title("Face Blur")
 root.mainloop()
 
